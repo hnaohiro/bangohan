@@ -69,6 +69,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
+      params[:user] = params unless params.include?(:user)
       params.require(:user).permit(:name, :hour, :min, :defined, :need, :order)
     end
 end
