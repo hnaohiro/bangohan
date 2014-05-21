@@ -9,4 +9,17 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Allow-Headers'] = '*, x-requested-with, Content-Type, If-Modified-Since, If-None-Match'
     headers['Access-Control-Max-Age'] = '86400'
   end
+
+  def notify(message)
+    sns = AWS::SNS.new(
+      access_key_id: ENV['AWS_ACCESS_KEY_NH'],
+      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY_NH'],
+      sns_endpoint: 'sns.ap-northeast-1.amazonaws.com'
+    ).client
+
+    sns.publish(
+      target_arn: ENV['SNS_GCM_ENDPOINT_ARN'],
+      message: message
+    )
+  end
 end

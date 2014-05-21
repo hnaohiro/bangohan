@@ -6,6 +6,7 @@ gem 'rails', '4.1.0'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
+gem 'aws-sdk'
 
 group :development, :test do
   gem 'sqlite3'
