@@ -29,10 +29,5 @@ class ApplicationController < ActionController::Base
         message: message
       )
     end
-
-    sns.publish(
-      target_arn: 'arn:aws:sns:ap-northeast-1:242316691382:endpoint/GCM/bangohan-android/d3c10d7e-3857-39ee-95fb-a18dc7bd9381',
-      message: message
-    )
   end
 end

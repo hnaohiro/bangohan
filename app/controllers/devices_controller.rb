@@ -1,4 +1,8 @@
 class DevicesController < ApplicationController
+  def index
+    @devices = Device.all
+  end
+
   def register
     respond_to do |format|
       if Device.register(device_params)
