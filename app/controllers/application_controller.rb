@@ -10,15 +10,28 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Max-Age'] = '86400'
   end
 
-  def notify(message)
+  def notify(sender_user_id, message)
     sns = AWS::SNS.new(
       access_key_id: ENV['AWS_ACCESS_KEY_NH'],
       secret_access_key: ENV['AWS_SECRET_ACCESS_KEY_NH'],
       sns_endpoint: 'sns.ap-northeast-1.amazonaws.com'
     ).client
 
+    users = User.where.not(id: sender_user_id)
+    users.each do |user|
+      response = sns.create_platform_endpoint(
+        platform_application_arn: user.platform_application_arn,
+        token: user.token
+      )
+
+      sns.publish(
+        target_arn: response[:endpoint_arn],
+        message: message
+      )
+    end
+
     sns.publish(
-      target_arn: ENV['SNS_GCM_ENDPOINT_ARN'],
+      target_arn: 'arn:aws:sns:ap-northeast-1:242316691382:endpoint/GCM/bangohan-android/d3c10d7e-3857-39ee-95fb-a18dc7bd9381',
       message: message
     )
   end

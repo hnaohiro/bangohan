@@ -40,7 +40,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        notify(@user.to_json)
+        notify(@user.id, @user.to_json)
         format.json { render json: @user, status: :ok }
       else
         format.json { render json: @user.errors, status: :unprocessable_entity }
