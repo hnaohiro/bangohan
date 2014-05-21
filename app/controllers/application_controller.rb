@@ -17,11 +17,11 @@ class ApplicationController < ActionController::Base
       sns_endpoint: 'sns.ap-northeast-1.amazonaws.com'
     ).client
 
-    users = User.where.not(id: sender_user_id)
-    users.each do |user|
+    devices = Device.where.not(user_id: sender_user_id)
+    devices.each do |device|
       response = sns.create_platform_endpoint(
-        platform_application_arn: user.platform_application_arn,
-        token: user.token
+        platform_application_arn: device.platform_application_arn,
+        token: device.token
       )
 
       sns.publish(
