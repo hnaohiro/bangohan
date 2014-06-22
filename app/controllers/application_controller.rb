@@ -11,23 +11,21 @@ class ApplicationController < ActionController::Base
   end
 
   def notify(sender_user_id, message)
-    sns = AWS::SNS.new(
-      access_key_id: ENV['AWS_ACCESS_KEY_NH'],
-      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY_NH'],
-      sns_endpoint: 'sns.ap-northeast-1.amazonaws.com'
-    ).client
+    sns = AWS::SNS.new.client
 
     devices = Device.where.not(user_id: sender_user_id)
     devices.each do |device|
-      response = sns.create_platform_endpoint(
-        platform_application_arn: device.platform_application_arn,
-        token: device.token
-      )
+      begin
+        response = sns.create_platform_endpoint(
+          platform_application_arn: device.platform_application_arn,
+          token: device.token
+        )
 
-      sns.publish(
-        target_arn: response[:endpoint_arn],
-        message: message
-      )
+        sns.publish(
+          target_arn: response[:endpoint_arn],
+          message: message
+        )
+      end
     end
   end
 end
