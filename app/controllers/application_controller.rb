@@ -21,11 +21,12 @@ class ApplicationController < ActionController::Base
           token: device.token
         )
 
-        sns.publish(
-          target_arn: response[:endpoint_arn],
-          message: message
-        )
+        sns.publish(target_arn: response[:endpoint_arn], message: message)
       rescue => e
+        token_info = e.message.scan /Invalid parameter: Token Reason: Endpoint (.+?) already exists/
+        if token_info[0]
+          sns.publish(target_arn: token_info[0][0], message: message)
+        end
       end
     end
   end
