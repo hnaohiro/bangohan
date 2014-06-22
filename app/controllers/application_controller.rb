@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
           target_arn: response[:endpoint_arn],
           message: message
         )
+      rescue => e
       end
     end
   end
