@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
     unless self.defined
       "#{self.name}が未定に変更しました。"
     else
-      if seld.need
+      if self.need
         "#{self.name}は#{self.hour}:#{self.min}に晩ご飯をたべます。"
       else
         "#{self.name}は今日はいりません。"
