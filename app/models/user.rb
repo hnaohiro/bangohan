@@ -4,12 +4,12 @@ class User < ActiveRecord::Base
 
   def self.reset
     all.each do |user|
-      user.update_attributes({
+      user.update_attributes(
         hour: 0,
         min: 0,
         need: true,
         defined: false
-      })
+      )
     end
   end
 
@@ -18,7 +18,9 @@ class User < ActiveRecord::Base
       "#{self.name}が未定に変更しました。"
     else
       if self.need
-        "#{self.name}は#{self.hour}:#{self.min}に晩ご飯をたべます。"
+        hour = sprintf('%0d2', self.hour)
+        min = sprintf('%02d', self.min)
+        "#{self.name}は#{hour}:#{min}に晩ご飯をたべます。"
       else
         "#{self.name}は今日はいりません。"
       end
